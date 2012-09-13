@@ -46,6 +46,8 @@ public class AssetStorage : MonoBehaviour {
 				message = "External storage is not available!";
 				Debug.Log("External storage is not available!");
 			} else {
+				message = "Try get MainPath" ; 
+				Debug.Log(message);
 				mainPath = GooglePlayDownloader.GetMainOBBPath(expPath);
 				Debug.Log("Main Path after first Fetch: " + mainPath);
 				message = "MainPath: " + mainPath; 
@@ -53,86 +55,84 @@ public class AssetStorage : MonoBehaviour {
 			
 			if(mainPath == null){
 				message = "OBB not available - download!"; 
-				GooglePlayDownloader.FetchOBB(); 
-				
+				Debug.Log(message); 
+				GooglePlayDownloader.FetchOBB();
+				mainPath = GooglePlayDownloader.GetMainOBBPath(expPath);
+				message = "OBB Fetch finished" + mainPath; 
+				Debug.Log(message); 
 			}
 		
 		}
 		StartCoroutine(Load()); 	
-		//Load(); 
+		
 	}
 	
 	IEnumerator Load(){
-	//void Load(){
 		
 		string filePath = string.Empty; 
 		if(GooglePlayDownloader.RunningOnAndroid()){	
 			bool testResourceLoaded = false;
 			int count = 0; 
-			//while(!testResourceLoaded) { 	
+			while(!testResourceLoaded) { 	
 				
 				mainPath = GooglePlayDownloader.GetMainOBBPath(expPath);
-				Debug.Log("Main Path after Fetch: " + mainPath);
+				
+				//Debug.Log("Main Path after Fetch: " + mainPath);
 				if(mainPath != null){
 					testResourceLoaded = true; 
-					Debug.Log("Found Main Path: " + mainPath);
-					//break; 
+					//Debug.Log("Found Main Path: " + mainPath);
+					break; 
 				}
 				count++; 
-				//if(count > 240)
-				//	break; 
-				//yield return new WaitForSeconds(0.5f); //Let's not constantly check, but give a buffer time to the loading
+				if(count > 60)
+					break; 
+				yield return new WaitForSeconds(0.5f); //Let's not constantly check, but give a buffer time to the loading
+
 	
-			//}
+			}
 			
-			if(!testResourceLoaded)
+			if(!testResourceLoaded){
 				message = "Connectionion Timeout"; 
-			else
+				Debug.Log(message); 
+			}
+				
+			else{
+				
 				message =  "Loading Finished";
-			
-		
-		//filePath += "jar:file://" +expPath; 
+				Debug.Log(message); 
+			}
+
 	
 			if(mainPath == null){
-				message = "MainFile still not found!"; 	
+				message = "MainFile still not found!"; 
+				Debug.Log(message); 
+				
 			}
-			message = "MainFile: " + mainPath;
+		
 			filePath = "jar:file://" + mainPath;
 			filePath += "!/"+AssetBundleName+".unity3d";
-			//filePath = mainPath; 
 			
 			
 		
 		} else {
 			filePath = "file://" + Application.dataPath; 
 			filePath += "/"+AssetBundleName+".unity3d"; 
+			
 		}
 			
 		
 		
-		
 		message = "FilePath: " + filePath; 
-		Debug.Log("FilePath: " + filePath);
-		//www = new WWW(filePath);
-		var bundle = WWW.LoadFromCacheOrDownload(filePath,0); 
-		yield return bundle; 
+		Debug.Log(message); 
+		
+		
+		www = WWW.LoadFromCacheOrDownload(filePath,0); 
+		yield return www;
+		var bundle = www.assetBundle; 
 		if(bundle == null)
 			Debug.Log("bundle == 0"); 
-		if(bundle.assetBundle == null)
-			Debug.Log("Assetbundle = 0"); 
-		Instantiate(bundle.assetBundle.Load(prefab, typeof(GameObject))); 
-		//yield return www;
-		//foreach(var prefab in PrefabNames){
-			Debug.LogWarning("startLoad: " + prefab); 
-			//AssetBundleRequest request = www.assetBundle.Load(prefab, typeof(GameObject));
-    		//yield return request;	
-			//www.LoadFromCacheOrDownload(filePath);
-			Debug.LogWarning("Load: " + prefab + " finished"); 
-			//requests.Add(prefab, request); 
-		//}
 		
-		//Application.LoadLevel(1);
-       message = "Finished"; 
+		Instantiate(bundle.Load(prefab, typeof(GameObject))); 
 
 	}
 	
@@ -143,6 +143,7 @@ public class AssetStorage : MonoBehaviour {
 		} else 
 			return ("Asset not found: " + name); */
 		//Instantiate(request.asset); 
+		
 		return ("Instance Finished: " + name ) ; 
 	}
 	

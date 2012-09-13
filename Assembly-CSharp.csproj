@@ -47,7 +47,6 @@
      <Compile Include="Assets\AssetStorage.cs" />
      <Compile Include="Assets\DownloadObbExample.cs" />
      <Compile Include="Assets\LOADER.cs" />
-     <Compile Include="Assets\OBBLoader.cs" />
      <Compile Include="Assets\TestMove.cs" />
      <None Include="Assets\Plugins\Android\build.xml" />
      <None Include="Assets\Plugins\Android\res\layout-v11\status_bar_ongoing_event_progress_bar.xml" />
