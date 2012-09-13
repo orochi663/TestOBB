@@ -30,11 +30,11 @@ static function ExportResource () {
 	BuildPipeline.PushAssetDependencies();
 
 	// Build streamed scene file into a seperate unity3d file
-	BuildPipeline.BuildPlayer(["Assets/AdditiveScene.unity"], "AssetBundles/AdditiveScene.unity3d", BuildTarget.WebPlayer, BuildOptions.BuildAdditionalStreamedScenes);	
+	BuildPipeline.BuildPlayer(["Assets/AdditiveScene.unity"], "AssetBundles/AdditiveScene.unity3d", BuildTarget.Android, BuildOptions.BuildAdditionalStreamedScenes);	
 
 	BuildPipeline.PopAssetDependencies();
 	
 	BuildPipeline.PopAssetDependencies();
 	
-	BuildPipeline.BuildPlayer(["Assets/Loader.unity"], "loader.unity3d", BuildTarget.WebPlayer, BuildOptions.Development);
+	BuildPipeline.BuildPlayer(["Assets/Loader.unity"], "loader.unity3d", BuildTarget.Android, BuildOptions.Development);
 }

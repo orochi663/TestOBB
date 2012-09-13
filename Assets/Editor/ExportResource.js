@@ -7,7 +7,7 @@ static function ExportResource () {
 		// Build the resource file from the active selection.
 		var selection = Selection.GetFiltered(typeof(Object), SelectionMode.DeepAssets);
 		
-		BuildPipeline.BuildAssetBundle(Selection.activeObject, selection, path, BuildAssetBundleOptions.CollectDependencies | BuildAssetBundleOptions.CompleteAssets);	
+		BuildPipeline.BuildAssetBundle(Selection.activeObject, selection, path, BuildAssetBundleOptions.CollectDependencies | BuildAssetBundleOptions.CompleteAssets,BuildTarget.Android);	
 		Selection.objects = selection;
 	}
 }
